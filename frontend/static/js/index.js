@@ -19,7 +19,15 @@ const router = async () => {
     // looking for our match
     let match = potentialMatches.find(potentialMatch => potentialMatch.isMatch)
 
-    console.log(potentialMatches)
+    // if we have not match, we are going to default to root index 0, which is from line 5 above
+    if(!match) {
+        match = {
+            route: routes[0],
+            isMatch: true
+        }
+    }
+
+    console.log(match.route.view())
 };
 
 // once all of the DOM has rendered, we run the router function
