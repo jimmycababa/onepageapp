@@ -1,3 +1,7 @@
+import Dashboard from "./views/Dashboard.js";
+import Posts from "./views/Posts.js";
+import Settings from "./views/Settings.js";
+
 // using the history API, redirecting to a page without loading a new resource
 // we are going to call the client side router to process the new history entry
 // this function will make it so when the user clicks on any of the links it will not reload the page and run the navigateTo function
@@ -9,9 +13,9 @@ const navigateTo = url => {
 const router = async () => {
     const routes = [
         // route path of the webpage. so we are saying that wheneve the user goesto the route path (/), we are going to run the function below starting at view.
-        { path: "/", view: () => console.log("Viewing Dashboard")}, 
-        { path: "/posts", view: () => console.log("Viewing Posts")}, 
-        { path: "/settings", view: () => console.log("Viewing Settings")} 
+        { path: "/", view: Dashboard }, 
+        { path: "/posts", view: Posts }, 
+        { path: "/settings", view: Settings } 
     ];
 
     // test each route for potential match. we are looping through each routh and returning a new object for each route
@@ -34,10 +38,16 @@ const router = async () => {
         }
     }
 
+    // creating a new instance 
+    const view = new match.route.view()
+
+    // we are getting the html method and injecting it inside the innerHtml of the app element (that is inside a div in the index.html )
+    document.querySelector("#app").innerHTML = await view.getHtml()
+
     console.log(match.route.view())
 };
 
-// we are listening for the popstate event
+// we are listening for the popstate event. this line reruns the router (history API)
 window.addEventListener("popstate", router)
 
 // once all of the DOM has rendered, we run the router function
